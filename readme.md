@@ -1,13 +1,19 @@
 ### 目的
 
 - 使得UE4能够更方便的集成第三方库
+- 使用案例：https://github.com/badforlabor/IvrMathGeo
 
 
 
 ### 约定
 
 ```
-// 第三方lib库 约定格式为
+// ThirdParty文件夹存放位置，与官方约定的一致，与uplugin同级
+Plugins/XXX_Plugin/
+	Thirdparty/
+	XXX_Plugin.uplugin
+	
+// 第三方lib库，约定文件夹目录结构为
 /*
     include
     lib32
