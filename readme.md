@@ -1,6 +1,6 @@
 ### 目的
 
-- 使得UE4能够更方便的依赖第三方库
+- 使得UE4能够更方便的集成第三方库
 
 
 
@@ -113,12 +113,19 @@ public class ivrEvpp : ivrModuleRules
             );
 
 		// *********   重点在这里 ************
-        string MyThird = Path.GetFullPath(Path.Combine(CurrentModulePath, "ThirdParty"));        
-        AddThirdParty(MyThird, "evpp", new string[] { ".", "3dparty" });
 
-        Definitions.Add("GOOGLE_PROTOBUF_NO_RTTI=0");
-        Definitions.Add("GOOGLE_PROTOBUF_USE_UNALIGNED=0");
-        AddThirdParty(Path.Combine(MyThird), "protobuf");
+		// 公共依赖库
+        thirdUtils.AddThirdParty(Path.Combine("evpp"));
+        
+        // 私有依赖头文件
+        thirdUtils.AddPrivateHeader(Path.Combine("evpp", "evpp"));
+        thirdUtils.AddPrivateHeader(Path.Combine("evpp", "3dparty"));
+
+        PublicDefinitions.Add("GOOGLE_PROTOBUF_NO_RTTI=0");
+        PublicDefinitions.Add("GOOGLE_PROTOBUF_USE_UNALIGNED=0");
+        thirdUtils.AddThirdParty("protobuf");
+
+        thirdUtils.AddThirdParty("evppwrapper");
 
         if (Target.Platform == UnrealTargetPlatform.Win64)
         {
@@ -130,5 +137,22 @@ public class ivrEvpp : ivrModuleRules
         }
     }
 }
+```
+
+
+
+### 遇到过的坑
+
+e4459错误，解决方法
+
+```
+// 在对应的区域位置加上
+
+#pragma warning(push)
+#pragma warning(disable: 4459)
+...
+...
+...
+#pragma warning(pop)
 ```
 
